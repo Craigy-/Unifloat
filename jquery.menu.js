@@ -18,6 +18,7 @@ $.menu(
         auto  : 'right' },
     move          : [15, 15],       // включает движение всплывающих элементов вслед за мышью ([top, left] - задаёт смещение от курсора, по умолчанию по 15 пикселей вправо-вниз)
     effect        : 'fast',         // скорость анимации (false, 'fast', 'normal', 'slow')
+    manipulation  : true,           // делает всплывающие узлы прямыми потомками body, чтобы не зависеть от вёрстки 
     show_prepare  : function(el),   // функция, вызываемая перед началом показа меню
     show_ready    : function(el),   // функция, вызываемая после полного показа меню с учётом времени анимации
     hide_callback : function(el)    // функция, вызываемая после исчезновения меню
@@ -112,7 +113,7 @@ $.showpos(
       if(!bid) return true;
 
       var targel = '#' + bid + opts.mask;
-      if(opts.manipulation) $('body').append($(targel)); // по умолчанию делаем всплывающие узлы прямыми потомками body, чтобы не зависеть от вёрстки
+      if(opts.manipulation) $('body').append($(targel));
       popups.push(targel);
 
       if(opts.move) {
