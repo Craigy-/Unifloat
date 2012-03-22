@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   1.0.1 (25.09.2009)
+Version:   1.0.1 (23.10.2009)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -10,13 +10,13 @@ $.menu(
   '.popup',   // выборка узлов, для которых активируется меню (обязательный параметр)
   {
     mask     : '_content', // маска для связи id главного и всплывающего элемента (например, 'popup_0' и 'popup_0_content')
-    position : false,      // позиционирование меню (подробней в методе $.menu.showpos)
+    position : false,      // позиционирование меню (подробней в методе $.showpos)
     effect   : 'fast',     // скорость анимации (false, 'fast', 'normal', 'slow')
   }
 );
 
 Позиционирует узел относительно другого и показывает его:
-$.menu.showpos(
+$.showpos(
   'popup_0',         // id узла (обязательный параметр)
   'popup_0_content', // id позиционируемого узла (обязательный параметр)
   'top left',        // позиционирование (строка свойств, разделенных пробелами), доступны:
@@ -56,7 +56,7 @@ $.menu.showpos(
         function() {
           $hide();
           if(opts.effect) $(targel).data('animated', 'true');
-          $.menu.showpos(this, $(targel), opts.position, opts.effect, function() {
+          $.showpos(this, $(targel), opts.position, opts.effect, function() {
             if(opts.effect) $(targel).removeData('animated');
           });
         },
@@ -77,7 +77,7 @@ $.menu.showpos(
   };
 
   // Позиционирует элемент относительно другого и показывает его
-  $.menu.showpos = function(src, targ, position, effect, callback) {
+  $.showpos = function(src, targ, position, effect, callback) {
     if(!src || !targ) return false;
     var src    = typeof src=='string' ? $('#'+src) : $(src),
         targ   = typeof targ=='string' ? $('#'+targ) : $(targ),
