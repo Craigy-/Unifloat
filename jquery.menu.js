@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.0.1 (28.06.2010)
+Version:   2.0.2 (04.08.2010)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -19,8 +19,8 @@ $.menu(
     effect        : 'fast',         // скорость анимации (false, 'fast', 'normal', 'slow')
     show_prepare  : function(el),   // функция, вызываемая перед началом показа меню
     show_ready    : function(el),   // функция, вызываемая после полного показа меню с учётом времени анимации
-                                       (оба коллбэка получают параметром элемент, на котором произошло событие hover)
-    hide_callback : function()      // функция, вызываемая после исчезновения меню
+    hide_callback : function(el)    // функция, вызываемая после исчезновения меню
+                                       (все коллбэки получают параметром элемент, на котором произошло событие hover)
   },
 );
 
@@ -109,7 +109,7 @@ $.showpos(
           if(opts.effect) $(targel).data('animating', 'true');
           $.showpos(this, $(targel), opts.posTop, opts.posLeft, opts.effect, function() {
             if(opts.effect) $(targel).removeData('animating');
-            opts.show_ready($(this));
+            opts.show_ready($('#'+bid));
           });
         },
         function(e) {
@@ -118,7 +118,7 @@ $.showpos(
           if(check) return;
           $(targel).hide();
           $hide();
-          opts.hide_callback();
+          opts.hide_callback($(this));
         }
       );
 
@@ -126,7 +126,7 @@ $.showpos(
         function(e) {
           if($(e.relatedTarget).parents('#'+bid).length!=0) return;
           $(this).hide();
-          opts.hide_callback();
+          opts.hide_callback($('#'+bid));
         }
       );
     });
