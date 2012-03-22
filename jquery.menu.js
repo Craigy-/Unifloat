@@ -1,27 +1,29 @@
 /*
-Name:      Dropdown Menu
+Name:      Floating Elements (Dropdown Menu, Tooltips etc)
 Use with:  jQuery
-Version:   2.2.4 (15.03.2012)
+Version:   2.2.5 (20.03.2012)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
 Создаёт систему всплывающих элементов:
 $.menu(
-  '.popup',                         // выборка узлов, для которых активируется меню (обязательный параметр)
+  '.popup',                         // выборка узлов, для которых активируется плагин (обязательный параметр)
   {
-    mask          : '_content',     // маска для связи id главного и всплывающего элемента (например, 'popup_0' и 'popup_0_content')
-    posTop        :                 // позиционирование меню (подробное описание в методе $.pos)
+    mask          : '_content',     // маска для получения id конкретного всплывающего элемента, по сути является постфиксом id главных элементов
+                                       (например, '#popup_0_content' получен конкатенацией id главного элемента '#popup_0' и маски '_content');
+                                       также допускается жёсткое указание id вместо маски - тогда только один этот элемент будет всплывать для всех узлов
+    posTop        :                 // позиционирование элементов (подробное описание в методе $.pos)
       { value : 'under',
         auto  : 'above' },
     posLeft       :
       { value : 'left',
         auto  : 'right' },
-    move          : [15, 15],       // включает движение всплывающих элементов вслед за мышью ([top, left] - задаёт смещение от курсора, по умолчанию по 15 пикселей вправо-вниз)
-    effect        : 'fast',         // скорость анимации (false, 'fast', 'normal', 'slow')
+    move          : [15, 15],       // включает движение всплывающих элементов вслед за мышью ([top, left] - задаёт смещение от курсора, по умолчанию по 15 пикселей вправо и вниз)
+    effect        : 'fast',         // скорость анимации (false, 'fast', 'normal', 'slow' либо нужное число миллисекунд)
     manipulation  : true,           // делает всплывающие узлы прямыми потомками <body>, чтобы не зависеть от вёрстки 
-    show_prepare  : function(el),   // функция, вызываемая перед началом показа меню
-    show_ready    : function(el),   // функция, вызываемая после полного показа меню с учётом времени анимации
-    hide_callback : function(el)    // функция, вызываемая после исчезновения меню
+    show_prepare  : function(el),   // функция, вызываемая перед началом показа всплывающего элемента
+    show_ready    : function(el),   // функция, вызываемая после полного показа элемента с учётом времени анимации
+    hide_callback : function(el)    // функция, вызываемая после исчезновения элемента
                                        (все коллбэки получают параметром элемент, на котором произошло событие hover)
   },
 );
@@ -87,8 +89,8 @@ $.showpos(
   { value : 'left',
     auto  : 'right' },
   false,                // флаг, определяющий подсчёт координат позиционируемого узла (false - относительно документа, true - относительно родителя)
-  'fast',               // скорость анимации (false, 'fast', 'normal', 'slow')
-  function() {}         // callback-функция, вызываемая после анимации и/или показа узла
+  'fast',               // скорость анимации (false, 'fast', 'normal', 'slow' либо нужное число миллисекунд)
+  function() {}         // коллбэк-функция, вызываемая после анимации и/или показа узла
 );
 */
 
@@ -109,10 +111,14 @@ $.showpos(
     };
 
     $(elems).each(function() {
-      var bid = $(this).attr('id');
-      if(!bid) return true;
+      var bid = $(this).attr('id'), targel;
+      if(!bid && !$(opts.mask).length) return true;
+      if($(opts.mask).length) {
+        targel = opts.mask;
+      } else {
+        targel = '#' + bid + opts.mask;
+      }
 
-      var targel = '#' + bid + opts.mask;
       if(opts.manipulation) $('body').append($(targel));
       popups.push(targel);
 
@@ -127,6 +133,7 @@ $.showpos(
         };
       }
 
+      var self = this;
       $(this).hover(
         function(e) {
           if($(targel).data('animating')) return;
@@ -136,7 +143,7 @@ $.showpos(
           var afterAnim = function() {
             if(opts.move) $(targel).css(mouseCoords(e));
             if(opts.effect) $(targel).removeData('animating');
-            opts.show_ready($('#'+bid));
+            opts.show_ready($(self));
           };
 
           if(opts.move) {
@@ -162,9 +169,13 @@ $.showpos(
       }
 
       $(targel).mouseleave(function(e) {
-        if($(e.relatedTarget).attr('id') && $(e.relatedTarget).attr('id')==bid || $(e.relatedTarget).parents('#'+bid).length!=0) return;
+        var check = false;
+        $(e.relatedTarget).parents().each(function() {
+          if(this===self) check = true;
+        });
+        if(e.relatedTarget===self || check) return;
         $(this).hide();
-        opts.hide_callback($('#'+bid));
+        opts.hide_callback($(self));
       });
     });
   };
