@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   1.0.1 (14.01.2010)
+Version:   1.0.1 (05.02.2010)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -39,7 +39,7 @@ $.showpos(
     var $hide = function() {
       for(var i=0,l=popups.length; i<l; i++) {
         var el = $(popups[i]);
-        if(el.data('animated')) {
+        if(el.data('animating')) {
           $(el).stop(true, true);
           $(el).hide();
         }
@@ -55,9 +55,9 @@ $.showpos(
       $(this).hover(
         function() {
           $hide();
-          if(opts.effect) $(targel).data('animated', 'true');
+          if(opts.effect) $(targel).data('animating', 'true');
           $.showpos(this, $(targel), opts.position, opts.effect, function() {
-            if(opts.effect) $(targel).removeData('animated');
+            if(opts.effect) $(targel).removeData('animating');
           });
         },
         function(e) {
