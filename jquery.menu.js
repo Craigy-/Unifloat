@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.2.2 (14.11.2011)
+Version:   2.2.3 (07.02.2012)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -128,10 +128,12 @@ $.showpos(
 
       $(this).hover(
         function(e) {
+          if($(targel).data('animating')) return;
           $hide();
           opts.show_prepare($(this));
           if(opts.effect) $(targel).data('animating', 'true');
           var afterAnim = function() {
+            if(opts.move) $(targel).css(mouseCoords(e));
             if(opts.effect) $(targel).removeData('animating');
             opts.show_ready($('#'+bid));
           };
