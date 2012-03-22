@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.0.5 (19.04.2011)
+Version:   2.1.0 (08.06.2011)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -10,7 +10,7 @@ $.menu(
   '.popup',                         // выборка узлов, для которых активируется меню (обязательный параметр)
   {
     mask          : '_content',     // маска для связи id главного и всплывающего элемента (например, 'popup_0' и 'popup_0_content')
-    posTop        :                 // позиционирование меню (подробное описание в методе $.showpos)
+    posTop        :                 // позиционирование меню (подробное описание в методе $.pos)
       { value : 'under',
         auto  : 'above' },
     posLeft       :
@@ -24,8 +24,8 @@ $.menu(
   },
 );
 
-Позиционирует скрытый узел относительно другого и показывает его:
-$.showpos(
+Вычисляет координаты указанного узла относительно другого:
+$.pos(
   'popup_0',            // id узла (обязательный параметр)
   'popup_0_content',    // id позиционируемого узла (обязательный параметр)
   { value : 'under',    // верхняя координата позиционируемого блока
@@ -73,6 +73,17 @@ $.showpos(
 
                                    Учтите, что первое слово может быть только одно, а формула - не обязательна!
 
+  false                 // флаг, определяющий подсчёт координат позиционируемого узла (false - относительно документа, true - относительно родителя)
+);
+
+Позиционирует скрытый узел относительно другого и показывает его:
+$.showpos(
+  'popup_0',            // id узла (обязательный параметр)
+  'popup_0_content',    // id позиционируемого узла (обязательный параметр)
+  { value : 'under',    // позиционирование узла (подробное описание в методе $.pos)
+    auto  : 'above' },
+  { value : 'left',
+    auto  : 'right' },
   false,                // флаг, определяющий подсчёт координат позиционируемого узла (false - относительно документа, true - относительно родителя)
   'fast',               // скорость анимации (false, 'fast', 'normal', 'slow')
   function() {}         // callback-функция, вызываемая после анимации и/или показа узла
@@ -132,7 +143,7 @@ $.showpos(
     });
   };
 
-  $.showpos = function(src, targ, posTop, posLeft, relative, effect, callback) {
+  $.pos = function(src, targ, posTop, posLeft, relative) {
     if(!src || !targ) return false;
     var src    = typeof src=='string' ? $('#'+src) : $(src),
         targ   = typeof targ=='string' ? $('#'+targ) : $(targ),
@@ -170,10 +181,17 @@ $.showpos(
     };
 
     var tt = countValue(posTop.value, true), tl = countValue(posLeft.value);
-    targ.css({
+    return {
       'top'  : posTop.auto ? ((tt + th) > ($(window).height() + $(document).scrollTop()) ? countValue(posTop.auto, true) : tt) : tt,
       'left' : posLeft.auto ? ((tl + tw) > ($(window).width() + $(document).scrollLeft()) ? countValue(posLeft.auto) : tl) : tl
-    }).show(effect, callback);
+    };
+  };
+
+  $.showpos = function(src, targ, posTop, posLeft, relative, effect, callback) {
+    var coords = $.pos(src, targ, posTop, posLeft, relative);
+    if(!coords) return false;
+
+    (typeof targ=='string' ? $('#'+targ) : $(targ)).css(coords).show(effect, callback);
     if(!effect && callback) callback();
 
     return true;
