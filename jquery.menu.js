@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   1.0.1 (23.10.2009)
+Version:   1.0.1 (14.01.2010)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -37,7 +37,7 @@ $.showpos(
 
     // Функция убивает все работающие анимации и принудительно скрывает элементы
     var $hide = function() {
-      for(var i=0; i<popups.length; i++) {
+      for(var i=0,l=popups.length; i<l; i++) {
         var el = $(popups[i]);
         if(el.data('animated')) {
           $(el).stop(true, true);
@@ -89,7 +89,7 @@ $.showpos(
         'left' : coords.left
       });
       var pAr = position.split(' ');
-      for(var i=0; i<pAr.length; i++) {
+      for(var i=0,l=pAr.length; i<l; i++) {
         switch(pAr[i]) {
           case 'top':
             targ.css('top', coords.top - th);
