@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.0.0 (23.06.2010)
+Version:   2.0.1 (28.06.2010)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -81,7 +81,7 @@ $.showpos(
 ;(function($) {
   $.menu = function(elems, options) {
     if(!elems) return;
-    var opts = $.extend({}, $.menu.defaults, options), popups = [];
+    var opts = $.extend(true, {}, $.menu.defaults, options), popups = [];
 
     // Принудительно скрывает все элементы, которые ещё анимируются
     var $hide = function() {
