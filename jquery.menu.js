@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   1.0.1 (05.02.2010)
+Version:   1.0.2 (21.06.2010)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -12,7 +12,9 @@ $.menu(
     mask     : '_content', // маска для связи id главного и всплывающего элемента (например, 'popup_0' и 'popup_0_content')
     position : false,      // позиционирование меню (подробней в методе $.showpos)
     effect   : 'fast',     // скорость анимации (false, 'fast', 'normal', 'slow')
-  }
+  },
+  show_prepare(el),        // функция, вызываемая перед началом показа меню, получает параметром элемент, на котором произошло событие hover
+  hide_callback()          // функция, вызываемая после анимации
 );
 
 Позиционирует узел относительно другого и показывает его:
@@ -22,6 +24,7 @@ $.showpos(
   'top left',        // позиционирование (строка свойств, разделенных пробелами), доступны:
                         top - над узлом,
                         bottom - под узлом,
+                        inherit - на одном уровне по высоте,
                         left - слева от узла,
                         right - справа от узла,
                         по умолчанию - позиционируется под узлом, если всё влезает в пределы экрана.
@@ -31,7 +34,7 @@ $.showpos(
 */
 
 ;(function($) {
-  $.menu = function(elems, options) {
+  $.menu = function(elems, options, show_prepare, hide_callback) {
     var opts = $.extend({}, $.menu.defaults, options), popups = [];
     if(!elems) return;
 
@@ -43,7 +46,7 @@ $.showpos(
           $(el).stop(true, true);
           $(el).hide();
         }
-      }      
+      }
     };
 
     $(elems).each(function() {
@@ -55,6 +58,7 @@ $.showpos(
       $(this).hover(
         function() {
           $hide();
+          if(show_prepare) show_prepare($(this));
           if(opts.effect) $(targel).data('animating', 'true');
           $.showpos(this, $(targel), opts.position, opts.effect, function() {
             if(opts.effect) $(targel).removeData('animating');
@@ -64,6 +68,7 @@ $.showpos(
           $hide();
           if($(e.relatedTarget).parents(targel).length!=0) return;
           $(targel).hide();
+          if(hide_callback) hide_callback();
         }
       );
 
@@ -71,6 +76,7 @@ $.showpos(
         function(e) {
           if($(e.relatedTarget).parents('#'+bid).length!=0) return;
           $(this).hide();
+          if(hide_callback) hide_callback();
         }
       );
     });
@@ -97,6 +103,8 @@ $.showpos(
           case 'bottom':
             targ.css('top', coords.top + sh);
           break;
+          case 'inherit':
+            targ.css('top', coords.top);
           case 'left':
             targ.css('left', coords.left - tw);
           break;
