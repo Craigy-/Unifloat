@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.0.4 (13.01.2011)
+Version:   2.0.5 (19.04.2011)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -73,6 +73,7 @@ $.showpos(
 
                                    Учтите, что первое слово может быть только одно, а формула - не обязательна!
 
+  false,                // флаг, определяющий подсчёт координат позиционируемого узла (false - относительно документа, true - относительно родителя)
   'fast',               // скорость анимации (false, 'fast', 'normal', 'slow')
   function() {}         // callback-функция, вызываемая после анимации и/или показа узла
 );
@@ -107,7 +108,7 @@ $.showpos(
           $hide();
           opts.show_prepare($(this));
           if(opts.effect) $(targel).data('animating', 'true');
-          $.showpos(this, $(targel), opts.posTop, opts.posLeft, opts.effect, function() {
+          $.showpos(this, $(targel), opts.posTop, opts.posLeft, false, opts.effect, function() {
             if(opts.effect) $(targel).removeData('animating');
             opts.show_ready($('#'+bid));
           });
@@ -131,11 +132,11 @@ $.showpos(
     });
   };
 
-  $.showpos = function(src, targ, posTop, posLeft, effect, callback) {
+  $.showpos = function(src, targ, posTop, posLeft, relative, effect, callback) {
     if(!src || !targ) return false;
     var src    = typeof src=='string' ? $('#'+src) : $(src),
         targ   = typeof targ=='string' ? $('#'+targ) : $(targ),
-        coords = src.offset(), tw = targ.outerWidth(), th = targ.outerHeight(), sw = src.outerWidth(), sh = src.outerHeight();
+        coords = relative ? src.position() : src.offset(), tw = targ.outerWidth(), th = targ.outerHeight(), sw = src.outerWidth(), sh = src.outerHeight();
 
     var countValue = function(str, sideTop) { // парсим и считаем значение выражения в пикселях
       var aliasTop = {
