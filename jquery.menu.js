@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.0.3 (11.01.2011)
+Version:   2.0.4 (13.01.2011)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -99,7 +99,7 @@ $.showpos(
       if(!bid) return true;
 
       var targel = '#' + bid + opts.mask;
-      $('body').append($(targel)); // делаем всплывающие узлы прямыми потомками body, чтобы не зависеть от вёрстки
+      if(opts.manipulation) $('body').append($(targel)); // по умолчанию делаем всплывающие узлы прямыми потомками body, чтобы не зависеть от вёрстки
       popups.push(targel);
 
       $(this).hover(
@@ -188,6 +188,7 @@ $.showpos(
       auto  : 'right'
     },
     effect        : 'fast',
+    manipulation  : true,
     show_prepare  : $.noop,
     show_ready    : $.noop,
     hide_callback : $.noop
