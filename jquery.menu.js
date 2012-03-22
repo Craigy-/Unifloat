@@ -1,44 +1,89 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   1.0.2 (21.06.2010)
+Version:   2.0.0 (23.06.2010)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
-Активирует всплывающее меню:
+Создаёт систему всплывающих элементов:
 $.menu(
-  '.popup',   // выборка узлов, для которых активируется меню (обязательный параметр)
+  '.popup',                         // выборка узлов, для которых активируется меню (обязательный параметр)
   {
-    mask     : '_content', // маска для связи id главного и всплывающего элемента (например, 'popup_0' и 'popup_0_content')
-    position : false,      // позиционирование меню (подробней в методе $.showpos)
-    effect   : 'fast',     // скорость анимации (false, 'fast', 'normal', 'slow')
+    mask          : '_content',     // маска для связи id главного и всплывающего элемента (например, 'popup_0' и 'popup_0_content')
+    posTop        :                 // позиционирование меню (подробное описание в методе $.showpos)
+      { value : 'under',
+        auto  : 'above' },
+    posLeft       :
+      { value : 'left',
+        auto  : 'right' },
+    effect        : 'fast',         // скорость анимации (false, 'fast', 'normal', 'slow')
+    show_prepare  : function(el),   // функция, вызываемая перед началом показа меню
+    show_ready    : function(el),   // функция, вызываемая после полного показа меню с учётом времени анимации
+                                       (оба коллбэка получают параметром элемент, на котором произошло событие hover)
+    hide_callback : function()      // функция, вызываемая после исчезновения меню
   },
-  show_prepare(el),        // функция, вызываемая перед началом показа меню, получает параметром элемент, на котором произошло событие hover
-  hide_callback()          // функция, вызываемая после анимации
 );
 
-Позиционирует узел относительно другого и показывает его:
+Позиционирует скрытый узел относительно другого и показывает его:
 $.showpos(
-  'popup_0',         // id узла (обязательный параметр)
-  'popup_0_content', // id позиционируемого узла (обязательный параметр)
-  'top left',        // позиционирование (строка свойств, разделенных пробелами), доступны:
-                        top - над узлом,
-                        bottom - под узлом,
-                        inherit - на одном уровне по высоте,
-                        left - слева от узла,
-                        right - справа от узла,
-                        по умолчанию - позиционируется под узлом, если всё влезает в пределы экрана.
-  'fast',            // скорость анимации (false, 'fast', 'normal', 'slow')
-  function() {}      // callback-функция, вызываемая после анимациии и/или показа узла
+  'popup_0',            // id узла (обязательный параметр)
+  'popup_0_content',    // id позиционируемого узла (обязательный параметр)
+  { value : 'under',    // верхняя координата позиционируемого блока
+    auto  : 'above' },
+  { value : 'left',     // левая координата позиционируемого блока
+    auto  : 'right' }, 
+
+                        Оба параметра представляют собой хэши следующего вида:
+                        {
+                          value : %%выражение%%,
+                          auto  : %%выражение%%
+                        }, где
+                           value - выражение, определяющее координату,
+                           auto  - выражение, определяющее альтернативную координату (в случае, если элемент не помещается в пределы окна браузера),
+                                   (значение false выключает проверку),
+                           %%выражение%% - 
+                                   строка вида 'under + 10 - %%THISHEIGHT%% / 2'
+                                               (означает: под источником + 10 пикселей - половина высоты элемента)
+                                   в которой первое слово вычисляется автоматически в соответствие со списком:
+
+                                   для posTop:
+                                   above  - над источником
+                                   top    - верх совпадает с верхом источника
+                                   center - верх совпадает с центром источника
+                                   bottom - низ совпадает с низом источника
+                                   under  - под источником
+
+                                   для posLeft:
+                                   before - перед источником
+                                   left   - левый край совпадает с левым краем источника
+                                   center - левый край совпадает с центром источника
+                                   right  - правый край совпадает с правым краем источника
+                                   after  - после источника,
+
+                                   а остальная часть представляет собой математическую формулу с любым числом действий,
+                                   в которой можно также использовать следующие ключевые слова:
+                                   %%SOURCEWIDTH%%    - ширина источника,
+                                   %%SOURCEHEIGHT%%   - высота источника,
+                                   %%THISWIDTH%%      - ширина позиционируемого элемента,
+                                   %%THISHEIGHT%%     - высота позиционируемого элемента,
+                                   %%WINDOWWIDTH%%    - ширина окна браузера,
+                                   %%WINDOWHEIGHT%%   - высота окна браузера,
+                                   %%DOCUMENTWIDTH%%  - ширина всего документа,
+                                   %%DOCUMENTHEIGHT%% - высота всего документа.
+
+                                   Учтите, что первое слово может быть только одно, а формула - не обязательна!
+
+  'fast',               // скорость анимации (false, 'fast', 'normal', 'slow')
+  function() {}         // callback-функция, вызываемая после анимации и/или показа узла
 );
 */
 
 ;(function($) {
-  $.menu = function(elems, options, show_prepare, hide_callback) {
-    var opts = $.extend({}, $.menu.defaults, options), popups = [];
+  $.menu = function(elems, options) {
     if(!elems) return;
+    var opts = $.extend({}, $.menu.defaults, options), popups = [];
 
-    // Функция убивает все работающие анимации и принудительно скрывает элементы
+    // Принудительно скрывает все элементы, которые ещё анимируются
     var $hide = function() {
       for(var i=0,l=popups.length; i<l; i++) {
         var el = $(popups[i]);
@@ -54,21 +99,26 @@ $.showpos(
       if(!bid) return true;
 
       var targel = '#' + bid + opts.mask;
+      $('body').append($(targel)); // делаем всплывающие узлы прямыми потомками body, чтобы не зависеть от вёрстки
       popups.push(targel);
+
       $(this).hover(
         function() {
           $hide();
-          if(show_prepare) show_prepare($(this));
+          opts.show_prepare($(this));
           if(opts.effect) $(targel).data('animating', 'true');
-          $.showpos(this, $(targel), opts.position, opts.effect, function() {
+          $.showpos(this, $(targel), opts.posTop, opts.posLeft, opts.effect, function() {
             if(opts.effect) $(targel).removeData('animating');
+            opts.show_ready($(this));
           });
         },
         function(e) {
-          $hide();
-          if($(e.relatedTarget).parents(targel).length!=0) return;
+          var msie6 = !!($.browser.msie && ($.browser.version && $.browser.version < 7 || /MSIE 6.0/.test(navigator.userAgent))),
+              check = msie6 ? '#'+$(e.relatedTarget).attr('id')==targel : $(e.relatedTarget).parents(targel).length!=0; // костыль
+          if(check) return;
           $(targel).hide();
-          if(hide_callback) hide_callback();
+          $hide();
+          opts.hide_callback();
         }
       );
 
@@ -76,55 +126,71 @@ $.showpos(
         function(e) {
           if($(e.relatedTarget).parents('#'+bid).length!=0) return;
           $(this).hide();
-          if(hide_callback) hide_callback();
+          opts.hide_callback();
         }
       );
     });
   };
 
-  // Позиционирует элемент относительно другого и показывает его
-  $.showpos = function(src, targ, position, effect, callback) {
+  $.showpos = function(src, targ, posTop, posLeft, effect, callback) {
     if(!src || !targ) return false;
     var src    = typeof src=='string' ? $('#'+src) : $(src),
         targ   = typeof targ=='string' ? $('#'+targ) : $(targ),
-        coords = src.offset(), tw = targ.width(), th = targ.height(), sw = src.width(), sh = src.height();
+        coords = src.offset(), tw = targ.outerWidth(), th = targ.outerHeight(), sw = src.outerWidth(), sh = src.outerHeight();
 
-    if(position && typeof position=='string') {
-      targ.css({
-        'top'  : coords.top,
-        'left' : coords.left
-      });
-      var pAr = position.split(' ');
-      for(var i=0,l=pAr.length; i<l; i++) {
-        switch(pAr[i]) {
-          case 'top':
-            targ.css('top', coords.top - th);
-          break;
-          case 'bottom':
-            targ.css('top', coords.top + sh);
-          break;
-          case 'inherit':
-            targ.css('top', coords.top);
-          case 'left':
-            targ.css('left', coords.left - tw);
-          break;
-          case 'right':
-            targ.css('left', coords.left + sw);
-          break;
-        }
-      }
-    } else targ.css({
-      'top'  : (coords.top + sh + th) > $(document).height() ? coords.top - th : coords.top + sh,
-      'left' : (coords.left + tw) > $(window).width() ? coords.left - ($(window).width() - (coords.left + tw)) : coords.left
-    });
+    var countValue = function(str, sideTop) { // парсим и считаем значение выражения в пикселях
+      var aliasTop = {
+        'above'  : coords.top - th,
+        'top'    : coords.top,
+        'center' : coords.top + sh / 2,
+        'bottom' : coords.top + sh - th,
+        'under'  : coords.top + sh
+      }, aliasLeft = {
+        'before' : coords.left - tw,
+        'left'   : coords.left,
+        'center' : coords.left + sw / 2,
+        'right'  : coords.left + sw - tw,
+        'after'  : coords.left + sw
+      }, templates = {
+        '%%SOURCEWIDTH%%'    : sw,
+        '%%SOURCEHEIGHT%%'   : sh,
+        '%%THISWIDTH%%'      : tw,
+        '%%THISHEIGHT%%'     : th,
+        '%%WINDOWWIDTH%%'    : $(window).width(),
+        '%%WINDOWHEIGHT%%'   : $(window).height(),
+        '%%DOCUMENTWIDTH%%'  : $(document).width(),
+        '%%DOCUMENTHEIGHT%%' : $(document).height()
+      }, keys = [];
 
-    targ.show(effect, callback);
+      for(var i in sideTop ? aliasTop : aliasLeft) keys.push(i);
+      var re = new RegExp('^.*(' + keys.join('|') + ')(.*)$', 'i');
+      var parsed = re.exec(str);
+
+      return eval('(' + (sideTop ? aliasTop : aliasLeft)[parsed[1]] + parsed[2].replace(/(%%[A-Z]+%%)/g, function($0) { return templates[$0]; }) + ')');
+    };
+
+    var tt = countValue(posTop.value, true), tl = countValue(posLeft.value);
+    targ.css({
+      'top'  : posTop.auto ? ((tt + th) > ($(window).height() + $(document).scrollTop()) ? countValue(posTop.auto, true) : tt) : tt,
+      'left' : posLeft.auto ? ((tl + tw) > ($(window).width() + $(document).scrollLeft()) ? countValue(posLeft.auto) : tl) : tl
+    }).show(effect, callback);
+
     return true;
   };
 
   $.menu.defaults = {
-    mask     : '_content',
-    position : false,
-    effect   : 'fast'
+    mask          : '_content',
+    posTop        : {
+      value : 'under',
+      auto  : 'above'
+    },
+    posLeft       : {
+      value : 'left',
+      auto  : 'right'
+    },
+    effect        : 'fast',
+    show_prepare  : $.noop,
+    show_ready    : $.noop,
+    hide_callback : $.noop
   };
 })(jQuery);
