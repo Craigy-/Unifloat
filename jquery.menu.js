@@ -108,7 +108,7 @@ $.showpos(
           $hide();
           opts.show_prepare($(this));
           if(opts.effect) $(targel).data('animating', 'true');
-          $.showpos(this, $(targel), opts.posTop, opts.posLeft, false, opts.effect, function() {
+          $.showpos(this, $(targel), opts.posTop, opts.posLeft, !opts.manipulation, opts.effect, function() {
             if(opts.effect) $(targel).removeData('animating');
             opts.show_ready($('#'+bid));
           });
