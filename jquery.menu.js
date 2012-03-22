@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.2.1 (20.06.2011)
+Version:   2.2.2 (14.11.2011)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -154,7 +154,7 @@ $.showpos(
 
       if(opts.move) {
         $(this).mousemove(function(e) {
-          $(targel).css(mouseCoords(e));
+          if(!$(targel).data('animating')) $(targel).css(mouseCoords(e));
         });
       }
 
