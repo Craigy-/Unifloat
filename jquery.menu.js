@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.0.2 (04.08.2010)
+Version:   2.0.3 (11.01.2011)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -113,8 +113,7 @@ $.showpos(
           });
         },
         function(e) {
-          var msie6 = !!($.browser.msie && ($.browser.version && $.browser.version < 7 || /MSIE 6.0/.test(navigator.userAgent))),
-              check = msie6 ? '#'+$(e.relatedTarget).attr('id')==targel : $(e.relatedTarget).parents(targel).length!=0; // костыль
+          var check = ($(e.relatedTarget).attr('id') && '#'+$(e.relatedTarget).attr('id')==targel) || $(e.relatedTarget).parents(targel).length!=0;
           if(check) return;
           $(targel).hide();
           $hide();
