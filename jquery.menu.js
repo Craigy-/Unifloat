@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.1.0 (08.06.2011)
+Version:   2.2.0 (15.06.2011)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -16,6 +16,7 @@ $.menu(
     posLeft       :
       { value : 'left',
         auto  : 'right' },
+    move          : [15, 15],       // включает движение всплывающих элементов вслед за мышью ([top, left] - задаёт смещение от курсора, по умолчанию по 15 пикселей вправо-вниз)
     effect        : 'fast',         // скорость анимации (false, 'fast', 'normal', 'slow')
     show_prepare  : function(el),   // функция, вызываемая перед началом показа меню
     show_ready    : function(el),   // функция, вызываемая после полного показа меню с учётом времени анимации
@@ -114,15 +115,31 @@ $.showpos(
       if(opts.manipulation) $('body').append($(targel)); // по умолчанию делаем всплывающие узлы прямыми потомками body, чтобы не зависеть от вёрстки
       popups.push(targel);
 
+      if(opts.move) {
+        var mouseCoords = function(event) { // возвращает координаты относительно мышиного курсора с заданным смещением
+          return {
+            'top'  : event.pageY + (opts.move[0] || 15),
+            'left' : event.pageX + (opts.move[1] || 15)
+          };
+        };
+      }
+
       $(this).hover(
-        function() {
+        function(e) {
           $hide();
           opts.show_prepare($(this));
           if(opts.effect) $(targel).data('animating', 'true');
-          $.showpos(this, $(targel), opts.posTop, opts.posLeft, !opts.manipulation, opts.effect, function() {
+          var afterAnim = function() {
             if(opts.effect) $(targel).removeData('animating');
             opts.show_ready($('#'+bid));
-          });
+          };
+
+          if(opts.move) {
+            $(targel).css(mouseCoords(e)).show(opts.effect, afterAnim);
+            if(!opts.effect) afterAnim();
+          } else {
+            $.showpos(this, $(targel), opts.posTop, opts.posLeft, !opts.manipulation, opts.effect, afterAnim);
+          }
         },
         function(e) {
           var check = ($(e.relatedTarget).attr('id') && '#'+$(e.relatedTarget).attr('id')==targel) || $(e.relatedTarget).parents(targel).length!=0;
@@ -133,13 +150,17 @@ $.showpos(
         }
       );
 
-      $(targel).mouseleave(
-        function(e) {
-          if($(e.relatedTarget).parents('#'+bid).length!=0) return;
-          $(this).hide();
-          opts.hide_callback($('#'+bid));
-        }
-      );
+      if(opts.move) {
+        $(this).mousemove(function(e) {
+          $(targel).css(mouseCoords(e));
+        });
+      }
+
+      $(targel).mouseleave(function(e) {
+        if($(e.relatedTarget).parents('#'+bid).length!=0) return;
+        $(this).hide();
+        opts.hide_callback($('#'+bid));
+      });
     });
   };
 
@@ -207,6 +228,7 @@ $.showpos(
       value : 'left',
       auto  : 'right'
     },
+    move          : false,
     effect        : 'fast',
     manipulation  : true,
     show_prepare  : $.noop,
