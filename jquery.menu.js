@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.2.0 (15.06.2011)
+Version:   2.2.1 (20.06.2011)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -117,9 +117,11 @@ $.showpos(
 
       if(opts.move) {
         var mouseCoords = function(event) { // возвращает координаты относительно мышиного курсора с заданным смещением
+          var x = event.pageX + (opts.move[1] || 15), y = event.pageY + (opts.move[0] || 15),
+              tw = $(targel).outerWidth(), th = $(targel).outerHeight();
           return {
-            'top'  : event.pageY + (opts.move[0] || 15),
-            'left' : event.pageX + (opts.move[1] || 15)
+            'top'  : (y + th) > ($(window).height() + $(document).scrollTop()) ? y - th : y,
+            'left' : (x + tw) > ($(window).width() + $(document).scrollLeft()) ? x - tw : x
           };
         };
       }
