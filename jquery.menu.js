@@ -173,6 +173,7 @@ $.showpos(
       'top'  : posTop.auto ? ((tt + th) > ($(window).height() + $(document).scrollTop()) ? countValue(posTop.auto, true) : tt) : tt,
       'left' : posLeft.auto ? ((tl + tw) > ($(window).width() + $(document).scrollLeft()) ? countValue(posLeft.auto) : tl) : tl
     }).show(effect, callback);
+    if(!effect) callback();
 
     return true;
   };
