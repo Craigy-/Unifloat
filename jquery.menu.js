@@ -1,7 +1,7 @@
 /*
 Name:      Dropdown Menu
 Use with:  jQuery
-Version:   2.2.3 (07.02.2012)
+Version:   2.2.4 (15.03.2012)
 Author:    Grigory Zarubin (Shogo.RU)
 
 
@@ -18,7 +18,7 @@ $.menu(
         auto  : 'right' },
     move          : [15, 15],       // включает движение всплывающих элементов вслед за мышью ([top, left] - задаёт смещение от курсора, по умолчанию по 15 пикселей вправо-вниз)
     effect        : 'fast',         // скорость анимации (false, 'fast', 'normal', 'slow')
-    manipulation  : true,           // делает всплывающие узлы прямыми потомками body, чтобы не зависеть от вёрстки 
+    manipulation  : true,           // делает всплывающие узлы прямыми потомками <body>, чтобы не зависеть от вёрстки 
     show_prepare  : function(el),   // функция, вызываемая перед началом показа меню
     show_ready    : function(el),   // функция, вызываемая после полного показа меню с учётом времени анимации
     hide_callback : function(el)    // функция, вызываемая после исчезновения меню
@@ -162,7 +162,7 @@ $.showpos(
       }
 
       $(targel).mouseleave(function(e) {
-        if($(e.relatedTarget).parents('#'+bid).length!=0) return;
+        if($(e.relatedTarget).attr('id') && $(e.relatedTarget).attr('id')==bid || $(e.relatedTarget).parents('#'+bid).length!=0) return;
         $(this).hide();
         opts.hide_callback($('#'+bid));
       });
