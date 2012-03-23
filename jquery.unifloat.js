@@ -6,8 +6,8 @@
  *
  * @author Grigory Zarubin (http://craigy.ru)
  * @link https://github.com/Craigy-/Unifloat
- * @version 2.2.6
- * @date 21.03.2012
+ * @version 2.2.7
+ * @date 23.03.2012
  *
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
@@ -58,7 +58,7 @@ $.pos(
                            %%выражение%% -
                                    строка вида 'under + 10 - %%THISHEIGHT%% / 2'
                                                (означает: под источником + 10 пикселей - половина высоты элемента)
-                                   в которой первое слово вычисляется автоматически в соответствие со списком:
+                                   в которой ключевое слово 'under' вычисляется автоматически в соответствие со списком:
 
                                    для posTop:
                                    above  - над источником
@@ -85,7 +85,7 @@ $.pos(
                                    %%DOCUMENTWIDTH%%  - ширина всего документа,
                                    %%DOCUMENTHEIGHT%% - высота всего документа.
 
-                                   Учтите, что первое слово может быть только одно, а формула - не обязательна!
+                                   Учтите, что ключевое слово может быть только одно, а формула - не обязательна!
 
   false                 // флаг, определяющий подсчёт координат позиционируемого узла (false - относительно документа, true - относительно родителя)
 );
@@ -193,7 +193,7 @@ $.showpos(
     if(!src || !targ) return false;
     var src    = typeof src=='string' ? $('#'+src) : $(src),
         targ   = typeof targ=='string' ? $('#'+targ) : $(targ),
-        coords = relative ? src.position() : src.offset(), tw = targ.outerWidth(), th = targ.outerHeight(), sw = src.outerWidth(), sh = src.outerHeight();
+        coords = relative ? src.position() : src.offset(), tw = targ.width(), th = targ.height(), sw = src.width(), sh = src.height();
 
     var countValue = function(str, sideTop) { // парсим и считаем значение выражения в пикселях
       var aliasTop = {
@@ -202,13 +202,15 @@ $.showpos(
         'center' : coords.top + sh / 2,
         'bottom' : coords.top + sh - th,
         'under'  : coords.top + sh
-      }, aliasLeft = {
+      },
+      aliasLeft = {
         'before' : coords.left - tw,
         'left'   : coords.left,
         'center' : coords.left + sw / 2,
         'right'  : coords.left + sw - tw,
         'after'  : coords.left + sw
-      }, templates = {
+      },
+      templates = {
         '%%SOURCEWIDTH%%'    : sw,
         '%%SOURCEHEIGHT%%'   : sh,
         '%%THISWIDTH%%'      : tw,
@@ -217,13 +219,18 @@ $.showpos(
         '%%WINDOWHEIGHT%%'   : $(window).height(),
         '%%DOCUMENTWIDTH%%'  : $(document).width(),
         '%%DOCUMENTHEIGHT%%' : $(document).height()
-      }, keys = [];
+      },
+      keys = [];
 
       for(var i in sideTop ? aliasTop : aliasLeft) keys.push(i);
-      var re = new RegExp('^.*(' + keys.join('|') + ')(.*)$', 'i');
-      var parsed = re.exec(str);
+      var parsed_aliases = new RegExp('(' + keys.join('|') + ')', 'g');
+      var ns = str.replace(/(%%[A-Z]+%%)/g, function($0) {
+        return templates[$0];
+      }).replace(parsed_aliases, function($0) {
+        return (sideTop ? aliasTop : aliasLeft)[$0];
+      });
 
-      return eval('(' + (sideTop ? aliasTop : aliasLeft)[parsed[1]] + parsed[2].replace(/(%%[A-Z]+%%)/g, function($0) { return templates[$0]; }) + ')');
+      return eval('(' + ns + ')');
     };
 
     var tt = countValue(posTop.value, true), tl = countValue(posLeft.value);
