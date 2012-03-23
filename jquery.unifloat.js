@@ -6,7 +6,7 @@
  *
  * @author Grigory Zarubin (http://craigy.ru)
  * @link https://github.com/Craigy-/Unifloat
- * @version 2.2.7
+ * @version 2.2.8
  * @date 23.03.2012
  *
  * Dual licensed under the MIT and GPL licenses:
@@ -252,16 +252,27 @@ $.unifloat.showpos(
       return eval('(' + ns + ')');
     };
 
+    var isFit = function(x, y) { // проверяем, помещается ли всплывающий элемент в пределы окна браузера
+      var dsl = $(document).scrollLeft(),
+          dst = $(document).scrollTop();
+      return {
+        'top'  : y >= dst && ($(window).height() + dst) >= (y + th),
+        'left' : x >= dsl && ($(window).width() + dsl) >= (x + tw)
+      };
+    };
+
     var tt = countValue(posTop.value, true), tl = countValue(posLeft.value);
     return {
-      'top'  : posTop.auto ? ((tt + th) > ($(window).height() + $(document).scrollTop()) ? countValue(posTop.auto, true) : tt) : tt,
-      'left' : posLeft.auto ? ((tl + tw) > ($(window).width() + $(document).scrollLeft()) ? countValue(posLeft.auto) : tl) : tl
+      'top'  : posTop.auto ? (isFit(tl, tt).top ? tt : countValue(posTop.auto, true)) : tt,
+      'left' : posLeft.auto ? (isFit(tl, tt).left ? tl : countValue(posLeft.auto)) : tl
     };
   };
 
   $.unifloat.showpos = function(src, targ, posTop, posLeft, relative, effect, callback) {
     var coords = $.unifloat.pos(src, targ, posTop, posLeft, relative);
-    if(!coords) return false;
+    if(!coords) {
+      throw new Error('Unifloat: can\'t get the correct coordinates, please check your expressions!');
+    }
 
     $(typeof targ=='string' ? '#' + targ : targ).css(coords).show(effect, callback);
     if(!effect && callback) {
