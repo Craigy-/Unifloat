@@ -122,7 +122,10 @@ $.showpos(
     };
 
     $(elems).each(function() {
-      var bid = $(this).attr('id'), targel;
+      var bid = $(this).attr('id'),
+          targel,
+          self = this;
+
       if(!bid && !$(opts.mask).length) return true;
       if($(opts.mask).length) {
         targel = opts.mask;
@@ -134,38 +137,50 @@ $.showpos(
       popups.push(targel);
 
       if(opts.move) {
-        var mouseCoords = function(event) { // возвращает координаты относительно мышиного курсора с заданным смещением
-          var x = event.pageX + (opts.move[1] || 15), y = event.pageY + (opts.move[0] || 15),
-              tw = $(targel).outerWidth(), th = $(targel).outerHeight();
+        var mouseCoords = function(event) { // возвращает координаты относительно мышиного курсора с заданным смещением (в виде выражений для метода $.pos)
+          var x = event.pageX,
+              y = event.pageY,
+              x_offset = opts.move[1] || 15,
+              y_offset = opts.move[0] || 15;
           return {
-            'top'  : (y + th) > ($(window).height() + $(document).scrollTop()) ? y - th : y,
-            'left' : (x + tw) > ($(window).width() + $(document).scrollLeft()) ? x - tw : x
+            'top' : {
+              value : String(y + y_offset),
+              auto  : y < 0 ? '0' : String(y - y_offset) + '-%%THISHEIGHT%%'
+            },
+            'left' : {
+              value : String(x + x_offset),
+              auto  : x < 0 ? '0' : String(x - x_offset) + '-%%THISWIDTH%%'
+            }
           };
         };
       }
 
-      var self = this;
       $(this).hover(
         function(e) {
           if($(targel).data('animating')) return;
           $hide();
           opts.show_prepare($(this));
-          if(opts.effect) $(targel).data('animating', 'true');
-          var afterAnim = function() {
-            if(opts.move) $(targel).css(mouseCoords(e));
-            if(opts.effect) $(targel).removeData('animating');
-            opts.show_ready($(self));
-          };
+          if(opts.effect) {
+            $(targel).data('animating', 'true');
+          }
 
           if(opts.move) {
-            $(targel).css(mouseCoords(e)).show(opts.effect, afterAnim);
-            if(!opts.effect) afterAnim();
-          } else {
-            $.showpos(this, $(targel), opts.posTop, opts.posLeft, !opts.manipulation, opts.effect, afterAnim);
+            var mpos = mouseCoords(e);
           }
+          $.showpos(this, $(targel), opts.move ? mpos.top : opts.posTop, opts.move ? mpos.left : opts.posLeft, !opts.manipulation, opts.effect, function() {
+            if(opts.move) {
+              var mpos = mouseCoords(e);
+              $(targel).css($.pos(self, $(targel), mpos.top, mpos.left, !opts.manipulation));
+            }
+            if(opts.effect) {
+              $(targel).removeData('animating');
+            }
+            opts.show_ready($(self));
+          });
         },
         function(e) {
-          if(($(e.relatedTarget).attr('id') && '#'+$(e.relatedTarget).attr('id')==targel) || $(e.relatedTarget).parents(targel).length!=0) return;
+          var check = ($(e.relatedTarget).attr('id') && '#'+$(e.relatedTarget).attr('id')==targel) || $(e.relatedTarget).parents(targel).length!=0;
+          if(check && !opts.move) return;
           $(targel).hide();
           $hide();
           opts.hide_callback($(this));
@@ -174,7 +189,10 @@ $.showpos(
 
       if(opts.move) {
         $(this).mousemove(function(e) {
-          if(!$(targel).data('animating')) $(targel).css(mouseCoords(e));
+          if(!$(targel).data('animating')) {
+            var mpos = mouseCoords(e);
+            $(targel).css($.pos(self, $(targel), mpos.top, mpos.left, !opts.manipulation));
+          }
         });
       }
 
@@ -245,8 +263,10 @@ $.showpos(
     var coords = $.pos(src, targ, posTop, posLeft, relative);
     if(!coords) return false;
 
-    (typeof targ=='string' ? $('#'+targ) : $(targ)).css(coords).show(effect, callback);
-    if(!effect && callback) callback();
+    $(typeof targ=='string' ? '#' + targ : targ).css(coords).show(effect, callback);
+    if(!effect && callback) {
+      callback();
+    }
 
     return true;
   };
