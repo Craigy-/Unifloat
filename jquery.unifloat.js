@@ -22,7 +22,7 @@ $.unifloat(
     mask          : '_content',     // маска для получения id конкретного всплывающего элемента, по сути является постфиксом id главных элементов
                                        (например, '#popup_0_content' получен конкатенацией id главного элемента '#popup_0' и маски '_content');
                                        также допускается жёсткое указание id вместо маски - тогда только один этот элемент будет всплывать для всех узлов
-    posTop        :                 // позиционирование элементов (подробное описание в методе $.pos)
+    posTop        :                 // позиционирование элементов (подробное описание в методе $.unifloat.pos)
       { value : 'under',
         auto  : 'above' },
     posLeft       :
@@ -39,7 +39,7 @@ $.unifloat(
 );
 
 Вычисляет координаты указанного узла относительно другого:
-$.pos(
+$.unifloat.pos(
   'popup_0',            // id узла (обязательный параметр)
   'popup_0_content',    // id позиционируемого узла (обязательный параметр)
   { value : 'under',    // верхняя координата позиционируемого блока
@@ -92,10 +92,10 @@ $.pos(
 );
 
 Позиционирует скрытый узел относительно другого и показывает его:
-$.showpos(
+$.unifloat.showpos(
   'popup_0',            // id узла (обязательный параметр)
   'popup_0_content',    // id позиционируемого узла (обязательный параметр)
-  { value : 'under',    // позиционирование узла (подробное описание в методе $.pos)
+  { value : 'under',    // позиционирование узла (подробное описание в методе $.unifloat.pos)
     auto  : 'above' },
   { value : 'left',
     auto  : 'right' },
@@ -137,7 +137,7 @@ $.showpos(
       popups.push(targel);
 
       if(opts.move) {
-        var mouseCoords = function(event) { // возвращает координаты относительно мышиного курсора с заданным смещением (в виде выражений для метода $.pos)
+        var mouseCoords = function(event) { // возвращает координаты относительно мышиного курсора с заданным смещением (в виде выражений для метода $.unifloat.pos)
           var x = event.pageX,
               y = event.pageY,
               x_offset = opts.move[1] || 15,
@@ -167,10 +167,10 @@ $.showpos(
           if(opts.move) {
             var mpos = mouseCoords(e);
           }
-          $.showpos(this, $(targel), opts.move ? mpos.top : opts.posTop, opts.move ? mpos.left : opts.posLeft, !opts.manipulation, opts.effect, function() {
+          $.unifloat.showpos(this, $(targel), opts.move ? mpos.top : opts.posTop, opts.move ? mpos.left : opts.posLeft, !opts.manipulation, opts.effect, function() {
             if(opts.move) {
               var mpos = mouseCoords(e);
-              $(targel).css($.pos(self, $(targel), mpos.top, mpos.left, !opts.manipulation));
+              $(targel).css($.unifloat.pos(self, $(targel), mpos.top, mpos.left, !opts.manipulation));
             }
             if(opts.effect) {
               $(targel).removeData('animating');
@@ -191,7 +191,7 @@ $.showpos(
         $(this).mousemove(function(e) {
           if(!$(targel).data('animating')) {
             var mpos = mouseCoords(e);
-            $(targel).css($.pos(self, $(targel), mpos.top, mpos.left, !opts.manipulation));
+            $(targel).css($.unifloat.pos(self, $(targel), mpos.top, mpos.left, !opts.manipulation));
           }
         });
       }
@@ -208,7 +208,7 @@ $.showpos(
     });
   };
 
-  $.pos = function(src, targ, posTop, posLeft, relative) {
+  $.unifloat.pos = function(src, targ, posTop, posLeft, relative) {
     if(!src || !targ) return false;
     var src    = typeof src=='string' ? $('#'+src) : $(src),
         targ   = typeof targ=='string' ? $('#'+targ) : $(targ),
@@ -259,8 +259,8 @@ $.showpos(
     };
   };
 
-  $.showpos = function(src, targ, posTop, posLeft, relative, effect, callback) {
-    var coords = $.pos(src, targ, posTop, posLeft, relative);
+  $.unifloat.showpos = function(src, targ, posTop, posLeft, relative, effect, callback) {
+    var coords = $.unifloat.pos(src, targ, posTop, posLeft, relative);
     if(!coords) return false;
 
     $(typeof targ=='string' ? '#' + targ : targ).css(coords).show(effect, callback);
