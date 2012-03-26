@@ -2,10 +2,10 @@
  * Unifloat
  * Universal plugin for simply creating floating elements such as Dropdown menus, Tooltips etc.
  *
- * @requires jQuery v1.4 or newer
+ * @requires jQuery v1.4.1 or newer
  *
  * @author Grigory Zarubin (http://craigy.ru)
- * @link https://github.com/Craigy-/Unifloat
+ * @link http://craigy-.github.com/Unifloat/
  * @version 2.2.8
  * @date 23.03.2012
  *
@@ -52,12 +52,12 @@ $.unifloat.pos(
                           value : %%выражение%%,
                           auto  : %%выражение%%
                         }, где
-                           value - строковое выражение, определяющее координату,
-                           auto  - строковое выражение, определяющее альтернативную координату (в случае, если элемент не помещается в пределы окна браузера),
+                           value - строковое выражение, описывающее координату,
+                           auto  - строковое выражение, описывающее альтернативную координату (в случае, если элемент не помещается в пределы окна браузера),
                                    (значение false выключает проверку),
                            %%выражение%% -
                                    строка вида 'under + 10 - %%THISHEIGHT%% / 2'
-                                               (означает: под источником + 10 пикселей - половина высоты элемента)
+                                               (пример означает: под источником + 10 пикселей - половина высоты элемента)
                                    в которой ключевое слово 'under' вычисляется автоматически в соответствие со списком:
 
                                    для posTop:
