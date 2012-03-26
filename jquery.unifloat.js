@@ -212,7 +212,7 @@ $.unifloat.showpos(
     if(!src || !targ) return false;
     var src    = typeof src=='string' ? $('#'+src) : $(src),
         targ   = typeof targ=='string' ? $('#'+targ) : $(targ),
-        coords = relative ? src.position() : src.offset(), tw = targ.width(), th = targ.height(), sw = src.width(), sh = src.height();
+        coords = relative ? src.position() : src.offset(), tw = targ.outerWidth(), th = targ.outerHeight(), sw = src.outerWidth(), sh = src.outerHeight();
 
     var countValue = function(str, sideTop) { // парсим и считаем значение выражения в пикселях
       var aliasTop = {
