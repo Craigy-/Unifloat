@@ -1,0 +1,32 @@
+{
+  "name": "jquery.unifloat",
+  "version": "3.0.0",
+  "title": "jQuery Unifloat",
+  "author": {
+    "name": "Grigory Zarubin",
+    "email": "grinder@tsu.tula.ru",
+    "url": "https://github.com/Craigy-"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    },
+    {
+      "type": "GPL",
+      "url": "http://www.gnu.org/licenses/gpl.html"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">=1.4.3"
+  },
+  "description": "Universal jQuery plugin for simply creating floating elements such as Dropdown menu and Tooltips",
+  "keywords": [
+    "float",
+    "dropdown",
+    "tooltip",
+    "position",
+    "show"
+  ],
+  "homepage": "http://craigy-.github.com/Unifloat/"
+}
