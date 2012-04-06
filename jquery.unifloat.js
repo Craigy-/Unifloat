@@ -7,7 +7,7 @@
  * @author Grigory Zarubin (http://craigy.ru)
  * @link http://craigy-.github.com/Unifloat/
  * @version 3.0.0
- * @date 05.04.2012
+ * @date 06.04.2012
  *
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
@@ -74,7 +74,7 @@
                 rel : this,
                 posTop : opts.move ? mpos.top : opts.posTop,
                 posLeft : opts.move ? mpos.left : opts.posLeft,
-                show_ready : function(source, target) {
+                onShow : function(source, target) {
                   if(opts.move) {
                     var mpos = mouseCoords(e);
                     $(targel).css(unifloat.pos.call($(targel), $.extend(true, {}, opts, {
@@ -83,7 +83,7 @@
                       posLeft : mpos.left
                     })));
                   }
-                  opts.show_ready(source, target);
+                  opts.onShow(source, target);
                 }
               }));
             },
@@ -92,7 +92,7 @@
               if(check && !opts.move) return;
               $(targel).hide();
               hideAll();
-              opts.hide(this, targel);
+              opts.onHide(this, targel);
             }
           );
 
@@ -116,7 +116,7 @@
             });
             if(e.relatedTarget===self || check) return;
             $(this).hide();
-            opts.hide(self, this);
+            opts.onHide(self, this);
           });
         }
       });
@@ -199,9 +199,9 @@
         var coords = unifloat.pos.call(this, opts),
             source = unifloat._getSource.call(this, opts) || 'body';
 
-        opts.show_prepare($(source), this);
+        opts.onHover($(source), this);
         $(this).css(coords).show(opts.effect ? opts.effect : 0, function() {
-          opts.show_ready($(source), this);
+          opts.onShow($(source), this);
         });
       });
     },
@@ -250,9 +250,9 @@
       move          : false,
       effect        : 'fast',
       manipulation  : true,
-      show_prepare  : $.noop,
-      show_ready    : $.noop,
-      hide          : $.noop
+      onHover       : $.noop,
+      onShow        : $.noop,
+      onHide        : $.noop
     }
   };
 
