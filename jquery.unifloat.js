@@ -1,6 +1,6 @@
 /*!
  * Unifloat
- * Universal plugin for simply creating floating elements such as Dropdown menus, Tooltips etc.
+ * Universal jQuery plugin for simply creating floating elements such as Dropdown menu and Tooltips
  *
  * @requires jQuery v1.4.3 or newer
  *
