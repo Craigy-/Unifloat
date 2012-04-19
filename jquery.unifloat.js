@@ -7,7 +7,7 @@
  * @author Grigory Zarubin (http://craigy.ru)
  * @link http://craigy-.github.com/Unifloat/
  * @version 3.0.0
- * @date 06.04.2012
+ * @date 19.04.2012
  *
  * Dual licensed under the MIT and GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
@@ -39,7 +39,7 @@
           if(!targel) return;
 
           $(this).data('unifloat', opts); // against multiple instantiations
-          if(opts.manipulation) $('body').append($(targel));
+          if(opts.manipulation) $(document.body).append($(targel));
           cache.push(targel);
 
           if(opts.move) {
@@ -126,7 +126,7 @@
     pos: function(options) {
       var opts = $.extend(true, {}, unifloat.defaults, options);
 
-      var source = unifloat._getSource.call(this, opts) || 'body',
+      var source = unifloat._getSource.call(this, opts) || document.body,
           coords = opts.manipulation ? $(source).offset() : $(source).position(),
           tw = $(this).outerWidth(),
           th = $(this).outerHeight(),
@@ -197,7 +197,7 @@
 
       return this.each(function() {
         var coords = unifloat.pos.call(this, opts),
-            source = unifloat._getSource.call(this, opts) || 'body';
+            source = unifloat._getSource.call(this, opts) || document.body;
 
         opts.onHover($(source), this);
         $(this).css(coords).show(opts.effect ? opts.effect : 0, function() {
