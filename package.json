@@ -20,8 +20,10 @@
     "show",
     "hide"
   ],
-  "dependencies": {
-    "jquery": ">=1.4.3"
+  "jquery": {
+    "dependencies": {
+      "jquery": ">=1.4.3"
+    }
   },
   "licenses": [
     {
