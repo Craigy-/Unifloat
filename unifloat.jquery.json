@@ -1,5 +1,5 @@
 {
-  "name": "jquery.unifloat",
+  "name": "unifloat",
   "version": "3.0.0",
   "title": "jQuery Unifloat",
   "description": "Universal jQuery plugin for simply creating floating elements such as Dropdown menu and Tooltips",
@@ -20,10 +20,8 @@
     "show",
     "hide"
   ],
-  "jquery": {
-    "dependencies": {
-      "jquery": ">=1.4.3"
-    }
+  "dependencies": {
+    "jquery": ">=1.4.3"
   },
   "licenses": [
     {
