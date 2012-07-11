@@ -1,10 +1,18 @@
-// Prepare demo page
 google.load('jquery', '1');
 google.setOnLoadCallback(function() {
-  $('.navi a').on('click', function(e) {
+
+  // Prepare Demo Page
+  var navis = $('.navi a');
+  navis.on('click', function(e) {
     e.preventDefault();
-    $('html').animate({
-      scrollTop: $('#' + $(this).attr('rel')).offset().top
-    }, 'fast');
+    var self = this;
+    $($.browser.webkit ? document.body : 'html').animate({
+      scrollTop: $('#' + $(this).attr('href').replace(/^(.*#)/, '')).offset().top
+    }, 'fast', function() {
+      navis.removeClass('active');
+      $(self).addClass('active');
+    });
   });
+
+  // Examples
 });
