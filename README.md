@@ -16,4 +16,4 @@ Please create an [issue](https://github.com/Craigy-/Unifloat/issues) and wait :)
 Contributing
 ------------
 
-If you want to help me you can to [contribute](CONTRIBUTING.md). Anyone is welcome!
+If you want to help me you can to [contribute](/Craigy-/Unifloat/blob/master/CONTRIBUTING.md). Anyone is welcome!
