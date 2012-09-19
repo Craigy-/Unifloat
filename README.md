@@ -8,7 +8,7 @@ Unifloat - simply creating floating elements
 To see a bunch of examples in action and read a full documentation please visit [the plugin's website](http://craigy-.github.com/Unifloat/).
 
 Find a bug or you want a new feature?
-------------
+-------------------------------------
 
 Please create an [issue](https://github.com/Craigy-/Unifloat/issues) and wait :)
 
@@ -16,4 +16,4 @@ Please create an [issue](https://github.com/Craigy-/Unifloat/issues) and wait :)
 Contributing
 ------------
 
-Fork it via GitHub, commit changes and send me a pull request.
+If you want to help me you can to [contribute](CONTRIBUTING.md). Anyone is welcome!
