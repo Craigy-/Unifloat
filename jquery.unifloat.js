@@ -9,7 +9,7 @@
  * @version 3.0.0
  * @date 19.04.2012
  *
- * Dual licensed under the MIT and GPL licenses:
+ * Dual licensed under the MIT or GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
  * http://www.gnu.org/licenses/gpl.html
  */
