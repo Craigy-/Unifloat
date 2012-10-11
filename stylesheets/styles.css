@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
 
 body {
-  padding:50px;
+  padding:0 50px;
   font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color:#777;
   font-weight:300;
@@ -50,6 +50,15 @@ a small {
   margin:0 auto;
 }
 
+.wrapper:before, .wrapper:after,
+.clearfix:before, .clearfix:after {
+  content:" ";
+  display:table; }
+
+.wrapper:after,
+.clearfix:after {
+  clear:both; }
+
 blockquote {
   border-left:1px solid #e5e5e5;
   margin:0;
@@ -97,11 +106,12 @@ img {
 
 header {
   width:270px;
+  padding-top:50px;
   float:left;
   position:fixed;
 }
 
-header ul {
+header ul.github {
   list-style:none;
   height:40px;
 
@@ -121,14 +131,14 @@ header ul {
   width:270px;
 }
 
-header li {
+header ul.github li {
   width:89px;
   float:left;
   border-right:1px solid #d2d2d2;
   height:40px;
 }
 
-header ul a {
+header ul.github a {
   line-height:1;
   font-size:11px;
   color:#999;
@@ -143,46 +153,47 @@ strong, b {
   font-weight:700;
 }
 
-header ul li + li {
+header ul.github li + li {
   width:88px;
   border-left:1px solid #fff;
 }
 
-header ul li + li + li {
+header ul.github li + li + li {
   border-right:none;
   width:89px;
 }
 
-header ul a strong, header ul a b {
+header ul.github a strong, header ul.github a b {
   font-size:14px;
   display:block;
   color:#222;
 }
 
-header .navi {
+.nav {
   font-size:18px;
   padding-left:21px;
+  list-style:none;
 }
 
-header .navi a b {
+.nav a b {
   color:#39c;
   border-bottom:1px dotted #39c;
 }
 
-header .navi a:hover {
+.nav a:hover {
   color:#FE8F00;
 }
 
-header .navi a.active {
+.nav .active a {
   color:#222;
 }
 
-header .navi a:hover b {
+.nav a:hover b {
   color:#FE8F00;
   border-color:#FE8F00;
 }
 
-header .navi a.active b {
+.nav .active a b {
   color:#222;
   border-color:#222;
 }
@@ -194,11 +205,7 @@ section {
 
 section .sections {
   padding-top:57px;
-  margin-top:1000px;
-}
-
-section .sections:first-child {
-  margin-top:-57px;
+  min-height:943px;
 }
 
 section .donate {
@@ -256,37 +263,36 @@ footer {
   }
 
   section .sections {
-    padding-top:20px;
-    margin:0!important;
-  }
-
-  section .sections {
     border:1px solid #e5e5e5;
     border-width:0 0 1px;
-    padding-bottom:20px;
+    min-height:1px;
+    padding:20px 0;
   }
 
   header a small {
     display:inline;
   }
 
-  header ul {
+  header ul.github {
     position:absolute;
     right:50px;
     top:52px;
   }
+
 }
 
 @media print, screen and (max-width: 720px) {
+
   body {
     word-wrap:break-word;
+    padding:0 20px;
   }
 
   header {
     padding:0;
   }
 
-  header ul, header p.view {
+  header ul.github, header p.view {
     position:static;
   }
 
@@ -304,16 +310,14 @@ footer {
     padding:15px;
   }
 
-  header ul {
-    display:none;
-  }
-
   section .donate li {
     margin-right:27px;
   }
+
 }
 
 @media print {
+
   body {
     padding:0.4in;
     font-size:12pt;
@@ -325,11 +329,12 @@ footer {
     content:' (' attr(href) ')';
   }
 
-  header .navi {
+  .nav {
     display:none;
   }
 
   section .sections:not(:first-child) {
     page-break-before:always;
   }
+
 }

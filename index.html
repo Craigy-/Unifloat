@@ -13,20 +13,22 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="header">
 
     <div class="wrapper">
       <header>
         <h1>Unifloat</h1>
         <p>Universal jQuery plugin for simply creating floating elements such as Dropdown menu and Tooltips.</p>
 
-        <p class="navi"><a href="#description" class="active"><b>Description</b></a><br>
-        <a href="#usage"><b>Usage</b></a><br>
-        <a href="#examples"><b>Examples</b></a></p>
+        <ul class="nav">
+        <li class="active"><a href="#description"><b>Description</b></a></li>
+        <li><a href="#usage"><b>Usage</b></a></li>
+        <li><a href="#examples"><b>Examples</b></a></li>
+        </ul>
 
         <p class="view"><a href="https://github.com/Craigy-/Unifloat">View the Project on GitHub <small>Craigy-/Unifloat</small></a></p>
 
-        <ul>
+        <ul class="github">
           <li><a href="https://github.com/Craigy-/Unifloat/zipball/master" class="no-content">Download <b>ZIP File</b></a></li>
           <li><a href="https://github.com/Craigy-/Unifloat/tarball/master" class="no-content">Download <b>TAR Ball</b></a></li>
           <li><a href="https://github.com/Craigy-/Unifloat" class="no-content">View On <b>GitHub</b></a></li>
@@ -35,7 +37,7 @@
 
       <section>
         <div class="sections" id="description">
-          <h1>Unifloat - simply creating floating elements</h1>
+          <h1>Unifloat &mdash; simply creating floating elements</h1>
 
           <p><b>Unifloat</b> is a universal <a href="https://github.com/jquery/jquery">jQuery</a> <a href="https://github.com/jquery/plugins.jquery.com">plugin</a> which allows you to create various types of floating elements. For example: dropdown menu, tooltips with or without moving, or something else.</p>
 
@@ -45,7 +47,7 @@
 
           <p>Please create an <a href="https://github.com/Craigy-/Unifloat/issues">issue</a> and wait :)</p>
 
-          <h2>Contributing</h2>
+          <h2>How to contribute</h2>
 
           <p>Fork it via GitHub, commit changes and send me a pull request.</p>
 
@@ -59,13 +61,13 @@
           </ul>
         </div>
 
-        <div id="usage" class="sections">
+        <div class="sections" id="usage">
           <h1>Usage</h1>
 
           <h2>API</h2>
         </div>
 
-        <div id="examples" class="sections">
+        <div class="sections" id="examples">
           <h1>Examples</h1>
         </div>
       </section>
@@ -78,6 +80,7 @@
 
     <script src="javascripts/scale.fix.js"></script>
     <script src="javascripts/demo.js"></script>
+    <script src="javascripts/bootstrap-scrollspy.min.js"></script>
 
   </body>
 </html>
