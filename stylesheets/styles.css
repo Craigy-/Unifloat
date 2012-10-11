@@ -204,7 +204,7 @@ section {
 }
 
 section .sections {
-  padding-top:57px;
+  padding-top:50px;
   min-height:943px;
 }
 
@@ -303,9 +303,11 @@ footer {
   section .donate li {
     margin-right:9px;
   }
+
 }
 
 @media print, screen and (max-width: 480px) {
+
   body {
     padding:15px;
   }
