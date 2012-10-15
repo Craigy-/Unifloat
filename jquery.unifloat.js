@@ -43,7 +43,7 @@
           cache.push(targel);
 
           if(opts.move) {
-            var mouseCoords = function(e) { // returns coordinates of the mouse cursor with a given offset (in the format of expressions for method .unifloat('pos'))
+            var mouseCoords = function(e) { // returns coordinates of the mouse cursor with a given offset (expressions for method .unifloat('pos'))
               var x = e.pageX,
                   y = e.pageY,
                   x_offset = opts.move[1] || 15,
