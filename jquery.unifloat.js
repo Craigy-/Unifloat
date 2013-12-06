@@ -7,7 +7,7 @@
  * @author Grigory Zarubin (http://craigy.ru)
  * @link http://craigy-.github.com/Unifloat/
  * @version 3.0.0
- * @date 19.04.2012
+ * @date 07.12.2013
  *
  * Dual licensed under the MIT or GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
@@ -88,7 +88,11 @@
               }));
             },
             function(e) {
-              var check = ($(e.relatedTarget).attr('id') && '#'+$(e.relatedTarget).attr('id')==targel) || $(e.relatedTarget).parents(targel).length!=0;
+              var check = false;
+              $(e.relatedTarget).parents().each(function() {
+                if(this===$(targel).get(0)) check = true;
+              });
+              if(e.relatedTarget===$(targel).get(0) || check) return;
               if(check && !opts.move) return;
               $(targel).hide();
               hideAll();
