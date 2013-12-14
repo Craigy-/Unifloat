@@ -7,7 +7,7 @@
  * @author Grigory Zarubin (http://craigy.ru)
  * @link http://craigy-.github.com/Unifloat/
  * @version 3.0.0
- * @date 07.12.2013
+ * @date 15.12.2013
  *
  * Dual licensed under the MIT or GPL licenses:
  * http://www.opensource.org/licenses/mit-license.php
@@ -242,7 +242,7 @@
 
 
     defaults: {
-      rel           : '_content',
+      rel           : '-content',
       posTop        : {
         value : 'under',
         auto  : 'above'
