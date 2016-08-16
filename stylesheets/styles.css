@@ -208,18 +208,6 @@ section .sections {
   min-height:943px;
 }
 
-section .donate {
-  margin:0;
-  padding:0;
-}
-
-section .donate li {
-  display:inline-block;
-  margin:0 30px 0 0;
-  padding:0;
-  list-style:none;
-}
-
 small {
   font-size:11px;
 }
