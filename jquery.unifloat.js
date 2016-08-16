@@ -4,8 +4,8 @@
  *
  * @requires jQuery v1.4.3 or newer
  *
- * @author Grigory Zarubin (http://craigy.ru)
- * @link http://craigy-.github.com/Unifloat/
+ * @author Grigory Zarubin (http://craigy.ru/)
+ * @link http://craigy-.github.io/Unifloat/
  * @version 3.0.0
  * @date 15.12.2013
  *

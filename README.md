@@ -1,19 +1,16 @@
-Unifloat — simply creating floating elements
-============================================
+# Unifloat — simply creating floating elements
 
-**Unifloat** is a universal [jQuery](https://github.com/jquery/jquery) [plugin](https://github.com/jquery/plugins.jquery.com) which allows you to create various types of floating elements. For example: dropdown menu, tooltips with or without moving, or something else.
+**Unifloat** is a universal [jQuery](https://github.com/jquery/jquery) [plugin](https://github.com/jquery/plugins.jquery.com) which allows you to create various types of floating elements. For example: *dropdown menu*, *tooltips* with or without moving after the mouse cursor, or something else.
 
-**Unifloat** designed like *a little framework* which give possibility to make your own code using plugin's methods and capabilities.
+**Unifloat** developed like *a little framework* which give possibility to make your own code using plugin's methods and capabilities.
 
-To see a bunch of examples in action and read a full documentation please visit [the plugin's website](http://craigy-.github.com/Unifloat/).
-
-Find a bug or you want a new feature?
--------------------------------------
-
-Please create an [issue](https://github.com/Craigy-/Unifloat/issues) and wait :)
+To see a bunch of examples in action and read a full documentation please visit [the plugin's website](http://craigy-.github.io/Unifloat/).
 
 
-Contributing
-------------
+## Contributing to this project
 
-If you want to help me you can to [contribute](/Craigy-/Unifloat/blob/master/CONTRIBUTING.md). Anyone is welcome!
+Anyone and everyone is welcome to contribute. Please take a moment to review the [guidelines for contributing](CONTRIBUTING.md).
+
+* [Bug reports](CONTRIBUTING.md#bugs)
+* [Feature requests](CONTRIBUTING.md#features)
+* [Pull requests](CONTRIBUTING.md#pull-requests)
