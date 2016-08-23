@@ -51,11 +51,11 @@
               return {
                 'top' : {
                   value : y + y_offset,
-                  auto  : y < 0 ? '0' : String(y - y_offset) + '-%%THISHEIGHT%%'
+                  auto  : y < 0 ? '0' : String(y - y_offset) + '-%%TARGETHEIGHT%%'
                 },
                 'left' : {
                   value : x + x_offset,
-                  auto  : x < 0 ? '0' : String(x - x_offset) + '-%%THISWIDTH%%'
+                  auto  : x < 0 ? '0' : String(x - x_offset) + '-%%TARGETWIDTH%%'
                 }
               };
             };
@@ -155,8 +155,8 @@
         templates = {
           '%%SOURCEWIDTH%%'    : sw,
           '%%SOURCEHEIGHT%%'   : sh,
-          '%%THISWIDTH%%'      : tw,
-          '%%THISHEIGHT%%'     : th,
+          '%%TARGETWIDTH%%'      : tw,
+          '%%TARGETHEIGHT%%'     : th,
           '%%WINDOWWIDTH%%'    : $(window).width(),
           '%%WINDOWHEIGHT%%'   : $(window).height(),
           '%%DOCUMENTWIDTH%%'  : $(document).width(),
