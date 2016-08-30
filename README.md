@@ -1,4 +1,4 @@
-# Unifloat — simply creating floating elements
+# Unifloat — simply creating popup elements
 
 **Unifloat** is a universal [jQuery](https://github.com/jquery/jquery) [plugin](https://github.com/jquery/plugins.jquery.com) which allows you to create various types of popup elements. For example: *dropdown menu*, *tooltips* with or without moving after the mouse cursor, or various *popup windows* with any content.
 
