@@ -155,8 +155,8 @@
         templates = {
           '%%SOURCEWIDTH%%'    : sw,
           '%%SOURCEHEIGHT%%'   : sh,
-          '%%TARGETWIDTH%%'      : tw,
-          '%%TARGETHEIGHT%%'     : th,
+          '%%TARGETWIDTH%%'    : tw,
+          '%%TARGETHEIGHT%%'   : th,
           '%%WINDOWWIDTH%%'    : $(window).width(),
           '%%WINDOWHEIGHT%%'   : $(window).height(),
           '%%DOCUMENTWIDTH%%'  : $(document).width(),
